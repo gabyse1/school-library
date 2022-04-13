@@ -7,6 +7,7 @@ It is a basic app to record what books are in the library and who borrows them. 
 - The Person class which is a super class
 - Student class which inherits properties and methods from Person class.
 - Teaching class which inherits properties and methods from Person class.
+- Use of Decorators to extend functionality from other classes in a dynamic way.
 
 
 ## Built With
