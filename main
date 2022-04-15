@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require_relative 'app'
+
+def execute_menu_options(app, option)
+  puts "\n"
+  case option
+  when 1
+    app.list_books
+  when 2
+    app.list_people
+  when 3
+    app.create_person
+  when 4
+    app.create_book
+  when 5
+    app.create_rental
+  when 6
+    app.list_rentals
+  end
+end
+
+def main
+  app = App.new
+  option = 0
+  while option != 7
+    app.display_menu
+    print '[Input the number]: '
+    option = gets.chomp.to_i
+    execute_menu_options(app, option) if option >= 1 && option <= 6
+  end
+  puts "Thank you for using this app!\n\n"
+end
+
+main

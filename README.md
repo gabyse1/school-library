@@ -4,9 +4,13 @@ It is a basic app to record what books are in the library and who borrows them. 
 
 ## Features
 
-- The Person class which is a super class
-- Student class which inherits properties and methods from Person class.
-- Teaching class which inherits properties and methods from Person class.
+- Displays a menu to choose between differen tasks.
+- Create person option allows user to choose between student or teacher.
+- Student or Teacher options allows user to input defferent information.
+- User must create at least a person and a student to be able to create rentals.
+- It checks for valid input numbers.
+- It checks for valid date format yyyy/mm/dd.
+- It checks that dates are valid, including leap years.
 - Use of Decorators to extend functionality from other classes in a dynamic way.
 
 
@@ -28,6 +32,10 @@ To get a local copy up and running follow these simple example steps.
 
 - Clone this repository to your local computer. Choose the location you prefer.
 - Run the command `bundle install` to install all project's dependencies.
+
+### Usage
+
+- Run the command `./main` to execute the programm.
 
 
 ## Authors
