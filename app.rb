@@ -51,9 +51,9 @@ class App
       answer = day <= 29 if leap_year?(year)
       answer = day <= 28 unless leap_year?(year)
     elsif [4, 6, 9, 11].include?(month)
-      answer = day <= 31
-    else
       answer = day <= 30
+    else
+      answer = day <= 31
     end
     answer
   end
