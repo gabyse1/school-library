@@ -2,73 +2,19 @@ require_relative 'student'
 require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
+require_relative '../modules/validators'
+require_relative '../modules/persist_load_data'
+require 'json'
 
 class App
   def initialize
-    @books = []
-    @people = []
-    @rentals = []
+    @books = load_data_books
+    @people = load_data_people
+    @rentals = load_data_rentals
   end
 
-  def display_menu
-    puts "\n\nPlease choose an option by entering a number:"
-    puts '1 - List all books'
-    puts '2 - List all people'
-    puts '3 - Create a person'
-    puts '4 - Create a book'
-    puts '5 - Create a rental'
-    puts '6 - List all rentals for a given person id'
-    puts '7 - Exit'
-  end
-
-  def valid_integer_input(request)
-    input = -1
-    while input <= 0
-      print "#{request}: "
-      input = gets.chomp.to_i
-    end
-    input
-  end
-
-  def valid_boolean_input(request)
-    input = ''
-    while input.downcase != 'y' && input.downcase != 'n'
-      print "#{request}: "
-      input = gets.chomp
-    end
-    input
-  end
-
-  def leap_year?(year)
-    return true if (year % 400).zero?
-    return false if (year % 100).zero?
-    return true if (year % 4).zero?
-  end
-
-  def valid_date_day?(day, month, year)
-    answer = false
-    if month == 2
-      answer = day <= 29 if leap_year?(year)
-      answer = day <= 28 unless leap_year?(year)
-    elsif [4, 6, 9, 11].include?(month)
-      answer = day <= 30
-    else
-      answer = day <= 31
-    end
-    answer
-  end
-
-  def valid_date?(date)
-    tempdate = date.split(%r{/}, 3)
-    date_y = tempdate[0].to_i
-    date_m = tempdate[1].to_i
-    date_d = tempdate[2].to_i
-    year = date_y > 1900
-    month = date_m >= 1 && date_m <= 12 if year
-    preday = date_d >= 1 if month
-    day = valid_date_day?(date_d, date_m, date_y) if preday
-    day
-  end
+  include Validators
+  include PersistLoadData
 
   def person_menu
     type = 0
@@ -86,8 +32,9 @@ class App
     name = gets.chomp
 
     if type == 1
-      parent_permission = false if valid_boolean_input('Has parent permission? [Y/N]') == 'n'
-      person = Student.new(age: age, name: name, parent_permission: parent_permission)
+      menu = 'Has parent permission? [Y/N]'
+      person = Student.new(age: age, name: name) if valid_bool_input(menu) == 'y'
+      person = Student.new(age: age, name: name, parent_permission: false) if valid_bool_input(menu) == 'n'
     else
       print 'Spetialization: '
       spetialization = gets.chomp
@@ -145,6 +92,7 @@ class App
 
   def list_people
     puts '------ AVAILABLE PEOPLE ------'
+    puts @people
     @people.each { |pe| puts "[#{pe.class}] Name: #{pe.name}, ID: #{pe.id}, Age: #{pe.age}" }
   end
 
