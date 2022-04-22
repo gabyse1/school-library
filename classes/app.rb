@@ -33,12 +33,12 @@ class App
 
     if type == 1
       menu = 'Has parent permission? [Y/N]'
-      person = Student.new(age: age, name: name) if valid_bool_input(menu) == 'y'
-      person = Student.new(age: age, name: name, parent_permission: false) if valid_bool_input(menu) == 'n'
+      person = Student.new(age, name: name) if valid_bool_input(menu) == 'y'
+      person = Student.new(age, name: name, parent_permission: false) if valid_bool_input(menu) == 'n'
     else
       print 'Spetialization: '
       spetialization = gets.chomp
-      person = Teacher.new(spetialization: spetialization, age: age, name: name)
+      person = Teacher.new(spetialization, age, name: name)
     end
     @people.push(person)
     puts 'Person created successfully'
@@ -81,7 +81,7 @@ class App
       print 'Date [yyyy/mm/dd]: '
       date = gets.chomp
     end
-    @rentals.push(Rental.new(date, @people[indexes[0]], @books[indexes[1]]))
+    @rentals.push(Rental.new(date, @books[indexes[1]], @people[indexes[0]]))
     puts 'Rental created successfully'
   end
 
