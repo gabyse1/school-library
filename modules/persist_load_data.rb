@@ -32,9 +32,17 @@ module PersistLoadData
   def persist_data_rentals
     rentaltemp = []
     @rentals.each do |rental|
-      rentaltemp << { date: rental.date, person: rental.person.id, book: rental.book.title }
+      rentaltemp << { date: rental.date, book: rental.book.title, person: rental.person.id }
     end
     File.write('data/rentals.json', rentaltemp.to_json)
+  end
+
+  def load_data_teacher(obj)
+    Teacher.new(obj['spetialization'], obj['age'], id: obj['id'], name: obj['name'])
+  end
+
+  def load_data_student(obj)
+    Student.new(obj['age'], id: obj['id'], name: obj['name'], parent_permission: obj['parent_permission'])
   end
 
   def load_data_people
@@ -42,17 +50,8 @@ module PersistLoadData
     if File.exist?('data/people.json')
       people_array = JSON.parse(File.read('data/people.json'))
       people_array.each do |obj|
-        if obj['class'] == 'Student'
-          person = Student.new(
-            age: obj['age'], id: obj['id'], name: obj['name'], parent_permission: obj['parent_permission']
-          )
-        else
-          person = Teacher.new(
-            age: obj['age'], id: obj['id'], name: obj['name'], parent_permission: obj['parent_permission'],
-            spetialization: obj['spetialization']
-          )
-        end
-        peopletemp << person
+        peopletemp << load_data_student(obj) if obj['class'] == 'Teacher'
+        peopletemp << load_data_teacher(obj) if obj['class'] == 'Student'
       end
     end
     peopletemp
@@ -74,9 +73,9 @@ module PersistLoadData
     if File.exist?('data/rentals.json')
       rentals_array = JSON.parse(File.read('data/rentals.json'))
       rentals_array.each do |obj|
-        person_obj = @people.find { |person| person.id == obj['person'] }
         book_obj = @books.find { |book| book.title == obj['book'] }
-        rentalstemp << Rental.new(obj['date'], person_obj, book_obj)
+        person_obj = @people.find { |person| person.id == obj['person'] }
+        rentalstemp << Rental.new(obj['date'], book_obj, person_obj)
       end
     end
     rentalstemp

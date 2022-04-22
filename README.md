@@ -27,6 +27,7 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 - Have `git` installed on your local computer.
+- Have `ruby` installed on your local computer.
 
 ### Install
 
